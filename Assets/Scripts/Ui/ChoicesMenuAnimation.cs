@@ -63,9 +63,7 @@ public class ChoicesMenuAnimation : MonoBehaviour
 
     private void ReloadMenu()
     {
+        _closeMenuTween.Restart();
         _currentSequenceType = SequenceType.OpenSequence;
-        _openMenuTween.Kill();
-        _closeMenuTween.Kill();
-        CreateAnimationSequences();
     }
 }

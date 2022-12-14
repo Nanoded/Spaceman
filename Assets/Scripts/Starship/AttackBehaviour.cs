@@ -22,6 +22,7 @@ public class AttackBehaviour : MonoBehaviour
         _laser.enabled = false;
         EventHandler.TimerIsEndEvent.AddListener(DisableAttackBehaviour);
         EventHandler.ReturnMainMenuEvent.AddListener(DisableAttackBehaviour);
+        EventHandler.RestartLevelEvent.AddListener(() => _rotationAnimation.Kill());
         CheckBullet();
     }
 

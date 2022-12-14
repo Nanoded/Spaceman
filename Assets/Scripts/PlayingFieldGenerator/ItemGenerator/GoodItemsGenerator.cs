@@ -33,6 +33,7 @@ public class GoodItemsGenerator : ItemGenerator
             }
             yield return new WaitForSeconds(_timeToSpawn);
             GridItem newItem = CreateItemInCell(_itemPrefab, randomCell);
+            if(newItem == null) continue;
             if (IsShotThroughPosition(newItem.transform.position + Vector3.up * 0.5f) == false)
             {
                 newItem.DestroyObject();

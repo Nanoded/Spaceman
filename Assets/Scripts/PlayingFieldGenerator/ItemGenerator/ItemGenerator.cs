@@ -25,7 +25,11 @@ public abstract class ItemGenerator : CryoBehaviour
 
     protected GridItem CreateItemInCell(GridItem item, Cell cell)
     {
-        GridItem newItem = Object.Instantiate(item, Vector3.zero, Quaternion.identity);
+        if(cell == null || item == null)
+        {
+            return null;
+        }
+        GridItem newItem = Instantiate(item, Vector3.zero, Quaternion.identity);
         _allItems.Add(newItem);
         newItem.PutInCell(cell);
         cell.PutItem(newItem.transform);

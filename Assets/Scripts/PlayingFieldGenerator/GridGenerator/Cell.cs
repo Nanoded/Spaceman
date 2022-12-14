@@ -9,6 +9,10 @@ public class Cell : MonoBehaviour
 
     public void PutItem(Transform item)
     {
+        if(item == null)
+        {
+            return;
+        }
         item.position = _itemPosition.position;
         ChangeState(false);
     }

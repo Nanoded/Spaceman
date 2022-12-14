@@ -31,6 +31,7 @@ public class ShipController : MonoBehaviour
             _moveToSequence.OnComplete(() => _idleAnimation.Play());
             _moveToSequence.Play();
         });
+        EventHandler.RestartLevelEvent.AddListener(PreattackPreparation);
     }
 
     private void Awake()
@@ -45,12 +46,17 @@ public class ShipController : MonoBehaviour
         _moveToSequence = _shipAnimation.CreateMoveToAnimation(movePosition);
         _moveToSequence.OnComplete(() =>
         {
-            transform.DORotate(_rotationEndValue, _movementTime).OnComplete(() =>
-            {
-                _attackBehaviour.EnableAttackBehaviour(_shipAnimation.CreateRotationAnimation());
-                _moveToSequence.Kill(true);
-            });
+            PreattackPreparation();
         });
         _moveToSequence.Play();
+    }
+
+    private void PreattackPreparation()
+    {
+        transform.DORotate(_rotationEndValue, _movementTime).OnComplete(() =>
+        {
+            _attackBehaviour.EnableAttackBehaviour(_shipAnimation.CreateRotationAnimation());
+            _moveToSequence.Kill(true);
+        });
     }
 }
