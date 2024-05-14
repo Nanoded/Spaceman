@@ -11,8 +11,15 @@ public class ShipController : MonoBehaviour
     private ShipAnimation _shipAnimation;
     private Sequence _idleAnimation;
     private Sequence _moveToSequence;
+    private Tween _preattackRotationTween;
 
     public Vector3 ShipPosition => transform.localPosition;
+
+    private void Awake()
+    {
+        _shipAnimation = new ShipAnimation(transform, _movementTime, _rotationEndValue);
+        _idleAnimation = _shipAnimation.CreateIdleAnimation().SetAutoKill(false);
+    }
 
     private void Start()
     {
@@ -25,23 +32,19 @@ public class ShipController : MonoBehaviour
         });
         EventHandler.ReturnMainMenuEvent.AddListener(() =>
         {
-            _moveToSequence.Pause().Kill();
+            _moveToSequence.Kill();
+            _preattackRotationTween.Kill();
             _moveToSequence = _shipAnimation.CreateMoveToAnimation(startPosition);
-            _moveToSequence.Append(transform.DORotate(startRotation, _movementTime));
+            _moveToSequence.Append(transform.DORotate(startRotation, 1).SetEase(Ease.Linear));
             _moveToSequence.OnComplete(() => _idleAnimation.Play());
             _moveToSequence.Play();
         });
         EventHandler.RestartLevelEvent.AddListener(PreattackPreparation);
     }
 
-    private void Awake()
-    {
-        _shipAnimation = new ShipAnimation(transform, _movementTime, _rotationEndValue);
-        _idleAnimation = _shipAnimation.CreateIdleAnimation().SetAutoKill(false);
-    }
-
     private void StartMoveToShootingPosition()
     {
+        _moveToSequence.Kill();
         Vector3 movePosition =  new Vector3(0, .5f, -(_gridGenerator.GridRadius + _distanceToGrid));
         _moveToSequence = _shipAnimation.CreateMoveToAnimation(movePosition);
         _moveToSequence.OnComplete(() =>
@@ -53,10 +56,9 @@ public class ShipController : MonoBehaviour
 
     private void PreattackPreparation()
     {
-        transform.DORotate(_rotationEndValue, _movementTime).OnComplete(() =>
+        _preattackRotationTween = transform.DORotate(_rotationEndValue, 1).OnComplete(() =>
         {
             _attackBehaviour.EnableAttackBehaviour(_shipAnimation.CreateRotationAnimation());
-            _moveToSequence.Kill(true);
         });
     }
 }

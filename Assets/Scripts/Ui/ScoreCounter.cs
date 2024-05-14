@@ -11,6 +11,16 @@ public class ScoreCounter : MonoBehaviour
 
     private void Start()
     {
+        EventHandler.RestartLevelEvent.AddListener(() =>
+        {
+            _currentScore = 0;
+            ApplyScores();
+        });
+        EventHandler.StartGameEvent.AddListener(() =>
+        {
+            _currentScore = 0;
+            ApplyScores();
+        });
         EventHandler.ChangeScoreEvent.AddListener(ChangeScore);
         ApplyScores();
     }

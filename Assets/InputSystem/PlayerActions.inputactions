@@ -58,6 +58,17 @@
                 },
                 {
                     "name": "",
+                    "id": "ca37dc45-cdd5-42d4-a77f-d62c89facb7c",
+                    "path": "<Touchscreen>/touch0/tap",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "d9aa37c7-fcb1-4d6f-8237-42314e7875ec",
                     "path": "<Mouse>/position",
                     "interactions": "",

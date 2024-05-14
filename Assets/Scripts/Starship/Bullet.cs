@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -5,7 +6,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour, IPoolableObject
 {
     [SerializeField] private float _speed;
-    [SerializeField] private int _lifetimeInMilliseconds;
+    [SerializeField] private int _lifetime;
     [SerializeField] private int _missedScore;
     private Rigidbody _rigidbody;
     private ObjectPool _bulletPool;
@@ -40,10 +41,15 @@ public class Bullet : MonoBehaviour, IPoolableObject
         transform.position = Pool.transform.position;
     }
 
-    public async void UseObject()
+    public void UseObject()
+    {
+        StartCoroutine(WaitBulletLifetime());
+    }
+
+    private IEnumerator WaitBulletLifetime()
     {
         _rigidbody.AddForce(transform.forward, ForceMode.Force);
-        await Task.Delay(_lifetimeInMilliseconds);
+        yield return new WaitForSeconds(_lifetime);
         if(_rigidbody.velocity.magnitude > 0)
         {
             EventHandler.ChangeScoreEvent.Invoke(_missedScore);

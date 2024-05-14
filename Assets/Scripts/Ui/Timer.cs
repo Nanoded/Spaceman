@@ -39,4 +39,9 @@ public class Timer : MonoBehaviour
             EventHandler.TimerIsEndEvent.Invoke();
         }
     }
+
+    public void AddSeconds(int seconds)
+    {
+        _currentValue += seconds;
+    }
 }

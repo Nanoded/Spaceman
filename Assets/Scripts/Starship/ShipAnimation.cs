@@ -18,8 +18,8 @@ public class ShipAnimation
     {
         Sequence moveSequence = DOTween.Sequence();
         moveSequence.Pause();
-        moveSequence.Append(_transform.DOMove(movePosition, _speed));
-        moveSequence.Insert(0, _transform.DOLookAt(movePosition, _speed));
+        moveSequence.Append(_transform.DOMove(movePosition, 1f).SetEase(Ease.Linear));
+        moveSequence.Insert(0, _transform.DOLookAt(movePosition, 1f).SetEase(Ease.Linear));
         return moveSequence;
     }
 
@@ -28,8 +28,8 @@ public class ShipAnimation
         Vector3 reverseRotationEndValueX = new Vector3(-_rotationEndValue.x, -_rotationEndValue.y, -_rotationEndValue.z);
         Sequence rotationSequence = DOTween.Sequence();
         rotationSequence.Pause();
-        rotationSequence.Append(_transform.DORotate(reverseRotationEndValueX, _speed));
-        rotationSequence.Append(_transform.DORotate(_rotationEndValue, _speed));
+        rotationSequence.Append(_transform.DORotate(reverseRotationEndValueX, _speed).SetEase(Ease.Linear));
+        rotationSequence.Append(_transform.DORotate(_rotationEndValue, _speed).SetEase(Ease.Linear));
         rotationSequence.SetLoops(-1);
         return rotationSequence;
     }

@@ -1,5 +1,5 @@
 using DG.Tweening;
-using System.Threading.Tasks;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -45,16 +45,21 @@ public class AttackBehaviour : MonoBehaviour
         _playerActions = new PlayerActions();
     }
 
-    private async void LeftClickAction(InputAction.CallbackContext obj)
+    private void LeftClickAction(InputAction.CallbackContext obj)
     {
         if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
+        StartCoroutine(WaitForShoot(2));
+    }
+
+    private IEnumerator WaitForShoot(int seconds)
+    {
         _rotationAnimation.Pause();
         _playerActions.Disable();
         Shoot();
-        await Task.Delay(3000);
+        yield return new WaitForSeconds(seconds);
         _rotationAnimation.Play();
         _playerActions.Enable();
     }
