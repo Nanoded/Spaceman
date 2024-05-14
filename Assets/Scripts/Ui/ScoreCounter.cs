@@ -1,6 +1,7 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using YG;
 
 public class ScoreCounter : MonoBehaviour
 {
@@ -22,7 +23,24 @@ public class ScoreCounter : MonoBehaviour
             ApplyScores();
         });
         EventHandler.ChangeScoreEvent.AddListener(ChangeScore);
+        EventHandler.TimerIsEndEvent.AddListener(TrySaveScore);
         ApplyScores();
+    }
+
+    private void TrySaveScore()
+    {
+        YandexGame.onGetLeaderboard += (lb) =>
+        {
+            if(lb.technoName == "Top")
+            {
+                var currentScore = lb.thisPlayer.score;
+                if(currentScore < _currentScore)
+                {
+                    lb.thisPlayer.score = _currentScore;
+                }
+            }
+        };
+        YandexGame.GetLeaderboard("Top", 7, 3, 3, "small");
     }
 
     public void ChangeScore(int score)
