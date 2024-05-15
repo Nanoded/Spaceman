@@ -36,7 +36,7 @@ namespace UI
             _bonusPanel.DOAnchorPos(Vector2.zero, 1).SetEase(Ease.Linear);
         }
 
-        private void HidePanel()
+        public void HidePanel()
         {
             _bonusPanel.DOAnchorPos(_hidePosition, 1).SetEase(Ease.Linear);
         }
