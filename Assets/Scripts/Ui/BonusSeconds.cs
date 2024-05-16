@@ -1,5 +1,4 @@
 using DG.Tweening;
-using System.Collections;
 using UnityEngine;
 
 namespace UI
@@ -15,24 +14,17 @@ namespace UI
     	{
             _buttonTransform.DORotate(new Vector3(0, 0, 90), 1).SetEase(Ease.Linear).SetLoops(-1, LoopType.Restart);
             _hidePosition = _bonusPanel.anchoredPosition;
-            EventHandler.StartGameEvent.AddListener(() =>StartCoroutine(WaitSecondsForShow()));
-            EventHandler.RestartLevelEvent.AddListener(() =>
-            {
-                StopAllCoroutines();
-                HidePanel();
-                StartCoroutine(WaitSecondsForShow());
-            });
             EventHandler.ReturnMainMenuEvent.AddListener(() => 
             { 
                 StopAllCoroutines();
-                HidePanel();
+                ShowPanel();
             });
-            EventHandler.TimerIsEndEvent.AddListener(() => HidePanel());
+            EventHandler.StartGameEvent.AddListener(() => HidePanel());
+            ShowPanel();
     	}
 
-        private IEnumerator WaitSecondsForShow()
+        private void ShowPanel()
         {
-            yield return new WaitForSeconds(_secondsForShow);
             _bonusPanel.DOAnchorPos(Vector2.zero, 1).SetEase(Ease.Linear);
         }
 

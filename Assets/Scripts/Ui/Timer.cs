@@ -9,19 +9,24 @@ public class Timer : MonoBehaviour
 
     private void Awake()
     {
+        _currentValue = _maxValue;
         EventHandler.StartGameEvent.AddListener(StartTimer);
         EventHandler.RestartLevelEvent.AddListener(RestartTimer);
-        EventHandler.ReturnMainMenuEvent.AddListener(CancelInvoke);
+        EventHandler.ReturnMainMenuEvent.AddListener(() => 
+        { 
+            CancelInvoke();
+            _currentValue = _maxValue;
+        });
     }
 
     private void StartTimer()
     {
-        _currentValue = _maxValue;
         InvokeRepeating("TimerInvoke", 0f, 1f);
     }
 
     private void RestartTimer()
     {
+        _currentValue = _maxValue;
         CancelInvoke();
         StartTimer();
     }
